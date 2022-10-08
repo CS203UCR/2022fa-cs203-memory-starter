@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
                         iterations = atoi(argv[i+1]);
                     break;
                 case 'h':
-                    std::cout << "-s set the size of the matrix to multiply.\n-p set the power to raise it to.\n-f what functions to run.\n-d sets the random seed.\n-o sets where statistics should go.\n-i sets the number of iterations.\n-v compares the result with the reference solution.\n"
+                    std::cout << "-s set the size of the matrix to multiply.\n-p set the power to raise it to.\n-f what functions to run.\n-d sets the random seed.\n-o sets where statistics should go.\n-i sets the number of iterations.\n-v compares the result with the reference solution.\n";
                     break;
                 case 'v':
 		            verify = 1;
