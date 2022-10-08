@@ -251,6 +251,8 @@ int main(int argc, char *argv[])
         char *stat_file = NULL;
         char default_filename[] = "stat.csv";
         char preamble[1024];
+        char epilogue[1024];
+        char header[1024];
 	
 	default_mhz.push_back(3700);
 
@@ -418,7 +420,8 @@ int main(int argc, char *argv[])
 	}
 	std::cout << "Execution started\n" ;
 	
-	perfstats_print_header(stat_file, "size,rep,arg1,function,IC,Cycles,CPI,CT,ET,L1_dcache_miss_rate,L1_dcache_misses,L1_dcache_accesses");
+	sprintf(header,"size,rep,arg1,function,IC,Cycles,CPI,CT,ET,L1_dcache_miss_rate,L1_dcache_misses,L1_dcache_accesses");
+        perfstats_print_header(stat_file, header);
 	parameter_map_t params;
 	for(auto &mhz: mhz_s) 
         {
@@ -459,7 +462,8 @@ int main(int argc, char *argv[])
 											fut();
 										}
 						perfstats_disable(garbage);
-						perfstats_print(preamble, stat_file, "\n");
+						sprintf(epilogue,"\n");
+						perfstats_print(preamble, stat_file, epilogue);
 	                                        perfstats_deinit();
 									}								
 								}
