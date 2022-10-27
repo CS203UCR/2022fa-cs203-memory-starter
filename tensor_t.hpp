@@ -47,13 +47,17 @@ static float rand_f(uint64_t & seed, float maxval) {
 	return maxval * ((fast_rand(&seed)&(0xffffffffu))+0.0) / (std::numeric_limits<uint32_t>::max()+0.0);
 }
 
-#define EPSILON 1e-2
+#define EPSILON 1e-6
 
 [[maybe_unused]] static bool almost_equal(float a, float b) {
         return std::abs(a-b) < EPSILON;
 }
 [[maybe_unused]] static bool almost_equal(double a, double b) {
+        if(std::isfinite(a) && std::isfinite(b))
         return std::abs(a-b) < EPSILON;
+        if(std::isinf(a) && std::isinf(b)) return true;
+        if(std::isnan(a) && std::isnan(b)) return true;
+        return false;
 }
 
 [[maybe_unused]] static bool almost_equal(uint64_t a, uint64_t b) {
@@ -368,8 +372,8 @@ static std::string diff(const tensor_t<T> & first, const tensor_t<T> & second)
 				for ( int x = 0; x < diff.size.x; x++ ) {
 				        if (!almost_equal(first(x,y,z,b), second(x,y,z,b)))
 						found = true;
-					if (deltas) {
-					        out  << std::setprecision(2) << first(x,y,z,b) - second(x,y,z,b) << " ";
+					if (deltas && !almost_equal(first(x,y,z,b), second(x,y,z,b))) {
+					        out  << std::setprecision(2) << "("<<first(x,y,z,b) << ","<< second(x,y,z,b) << ") ";
 					} else {
 						out << (!almost_equal(first(x,y,z,b), second(x,y,z,b)) ? "#" : ".");
 					}
